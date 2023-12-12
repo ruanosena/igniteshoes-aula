@@ -1,26 +1,17 @@
 import { HStack, Text, IconButton, CloseIcon, Icon, Pressable } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { OSNotification } from "react-native-onesignal";
+import * as Linking from "expo-linking";
 
 type Props = {
 	dados: OSNotification;
 	onClose: () => void;
 };
 
-type DadosAdicionaisProps = {
-	route?: "details";
-	product_id?: string;
-};
-
 export function Notification({ dados, onClose }: Props) {
-	const { navigate: navegar } = useNavigation();
-
 	function lidarPressionar() {
-		const { route, product_id } = dados.additionalData as DadosAdicionaisProps;
-
-		if (route == "details" && product_id) {
-			navegar("details", { productId: product_id });
+		if (dados.launchURL) {
+			Linking.openURL(dados.launchURL);
 		}
 		onClose();
 	}

@@ -11,6 +11,7 @@ import { Loading } from "./src/components/Loading";
 import { CartContextProvider } from "./src/contexts/CartContext";
 
 import { tagUserInfoCreate } from "./src/notifications/notificationTags";
+import { useEffect } from "react";
 
 OneSignal.setAppId("23a22fbc-2cb9-437d-8dcf-ef1f63b2b8da");
 
@@ -20,6 +21,22 @@ export default function App() {
 	const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
 
 	tagUserInfoCreate();
+
+	useEffect(() => {
+		const desinscrever = OneSignal.setNotificationOpenedHandler((resposta) => {
+			const { actionId } = resposta.action as any;
+
+			switch (actionId) {
+				case "1":
+					return console.log("Ver todas");
+				case "2":
+					return console.log("Ver pedido");
+				default:
+					return console.log("Não clicou em botão de ação");
+			}
+		});
+		return () => desinscrever;
+	}, []);
 
 	return (
 		<NativeBaseProvider theme={THEME}>
