@@ -7,3 +7,7 @@ export function tagUserInfoCreate() {
 	});
 	OneSignal.deleteTags(["user_name", "user_email"]);
 }
+
+export function tagCartUpdate(itensCont: string) {
+	OneSignal.sendTag("carrinho_itens_cont", itensCont);
+}
